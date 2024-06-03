@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 interface AuthFormProps {
   type: 'login' | 'register';
@@ -77,7 +78,26 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit }) => {
         >
           {type === 'login' ? 'Login' : 'Register'}
         </button>
-      </div>
+        {type === 'login' ? (
+  <Link
+    to="/"
+    className="flex justify-end items-center text-gray-800 text-lg underline"
+  >
+    New user? Register first
+  </Link>
+) : (
+  <Link
+    to="/login"
+    className="flex justify-end items-center text-gray-800 text-lg underline"
+  >
+    Already Registered? Login
+  </Link>
+)}
+
+
+      </div> 
+
+
     </form>
   );
 };

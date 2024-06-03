@@ -2,7 +2,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import lvg from "../assets/levi (1).png";
-
+import {backend_url} from '../components/config'
 const GeneratePage = () => {
   const location = useLocation();
   const products = location.state?.products || [];
@@ -18,7 +18,7 @@ const GeneratePage = () => {
     try {
       const url = window.location.href; // Current page URL
 
-      const response = await axios.get("http://localhost:3000/generate", {
+      const response = await axios.get(`${backend_url}/generate`, {
         params: { url },
         responseType: "blob", // Important to receive the binary data
       });
