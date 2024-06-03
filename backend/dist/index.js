@@ -7,22 +7,28 @@ const express_1 = __importDefault(require("express"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const routee_1 = __importDefault(require("./routes/routee"));
-const puppeteer = require('puppeteer');
-const fs = require('fs');
-const path = require('path');
+const puppeteer = require("puppeteer");
+const fs = require("fs");
+const path = require("path");
 dotenv_1.default.config();
-const cors = require('cors');
+const cors = require("cors");
 const app = (0, express_1.default)();
+app.get("/", (req, res) => {
+    return res.send("Welcome to typescript backend!");
+});
 app.use(express_1.default.json());
 app.use(cors());
 const PORT = process.env.PORT || 3000;
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/invoice-generator';
-mongoose_1.default.connect(MONGO_URI).then(() => {
-    console.log('Connected to MongoDB');
-}).catch(err => {
-    console.error('Error connecting to MongoDB', err);
+const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/invoice-generator";
+mongoose_1.default
+    .connect(MONGO_URI)
+    .then(() => {
+    console.log("Connected to MongoDB");
+})
+    .catch((err) => {
+    console.error("Error connecting to MongoDB", err);
 });
-app.use('/api/auth', routee_1.default);
+app.use("/api/auth", routee_1.default);
 app.get("/generate", async (req, res) => {
     const { url } = req.query;
     if (!url) {
@@ -31,18 +37,18 @@ app.get("/generate", async (req, res) => {
     try {
         const browser = await puppeteer.launch({
             headless: true,
-            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+            args: ["--no-sandbox", "--disable-setuid-sandbox"],
         });
         const page = await browser.newPage();
         await page.goto(url, {
-            waitUntil: ['networkidle0', 'domcontentloaded'],
+            waitUntil: ["networkidle0", "domcontentloaded"],
             timeout: 0, // Remove the timeout limit for loading the page
         });
         // Remove the download button before generating the PDF
         await page.evaluate(() => {
-            const downloadButton = document.querySelector('button');
+            const downloadButton = document.querySelector("button");
             if (downloadButton) {
-                downloadButton.style.display = 'none';
+                downloadButton.style.display = "none";
             }
         });
         const pdf = await page.pdf({ format: "A4", printBackground: true });
@@ -52,6 +58,7 @@ app.get("/generate", async (req, res) => {
             "Content-Disposition": 'attachment; filename="invoice.pdf"',
         });
         res.send(pdf);
+        console.log("done");
     }
     catch (error) {
         console.error("Error generating PDF:", error);

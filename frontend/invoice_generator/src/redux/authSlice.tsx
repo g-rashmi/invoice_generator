@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
- import apiClient from '../axioss' 
+ import apiClient from './axioss' 
 // Adjust the import path accordingly
  
  interface AuthState {
