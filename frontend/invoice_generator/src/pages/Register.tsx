@@ -19,8 +19,8 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <AuthForm type="register" onSubmit={handleRegister} />
+    <div className="flex justify-center back items-center h-screen">
+      <AuthForm type="register" onSubmit={handleRegister}/>
     </div>
   );
 };

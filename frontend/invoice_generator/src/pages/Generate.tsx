@@ -12,20 +12,32 @@ const GeneratePage = () => {
     (total, product) => total + product.quantity * product.rate,
     0
   );
+  
 
   const handleFunction = async () => {
     try {
       const url = window.location.href; // Current page URL
 
-      const response = await axios.get("http://localhost:5000/generate", {
+      const response = await axios.get("http://localhost:3000/generate", {
         params: { url },
         responseType: "blob", // Important to receive the binary data
       });
+
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const blobUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = "invoice.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } catch (error) {
       console.error("Error downloading invoice:", error);
     }
   };
 
+  
+  
   return (
     <>
       <div className="m-2 p-1 border-indigo-500 border-x-2 border-y-2">

@@ -11,7 +11,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/invoice-generator';
 
 mongoose.connect(MONGO_URI, ).then(() => {
@@ -21,30 +21,53 @@ mongoose.connect(MONGO_URI, ).then(() => {
 });
 app.use('/api/auth', authRoutes);
 
-app.get('/generate', async (req, res) => {
-  const url = req.query.url as string;
+
+
+app.get("/generate", async (req, res) => {
+  const { url } = req.query;
 
   if (!url) {
-      return res.status(400).json({ error: 'URL is required' });
+    return res.status(400).send("URL is required");
   }
 
   try {
-      const browser = await puppeteer.launch({ headless: true });
-      const page = await browser.newPage();
-      await page.goto(url, { waitUntil: 'networkidle2' });
-
-      // Generate PDF
-      const pdf = await page.pdf({path:'invoice.pdf',format: 'A4' });
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    });
+    const page = await browser.newPage();
     
-      await browser.close();
+    await page.goto(url, {
+      waitUntil: ['networkidle0', 'domcontentloaded'],
+      timeout: 0,  // Remove the timeout limit for loading the page
+    });
+    
+    // Remove the download button before generating the PDF
+    await page.evaluate(() => {
+      const downloadButton = document.querySelector('button');
+      if (downloadButton) {
+        downloadButton.style.display = 'none';
+      }
+    });
 
-      res.contentType("application/pdf");
-      res.send(pdf);
+    const pdf = await page.pdf({ format: "A4", printBackground: true });
+
+    await browser.close();
+
+    res.set({
+      "Content-Type": "application/pdf",
+      "Content-Disposition": 'attachment; filename="invoice.pdf"',
+    });
+
+    res.send(pdf); 
+    console.log("done")
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: error });
+    console.error("Error generating PDF:", error);
+    res.status(500).send("Error generating PDF");
   }
 });
+
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
