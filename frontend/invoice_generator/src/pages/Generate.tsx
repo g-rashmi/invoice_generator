@@ -3,15 +3,21 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import lvg from "../assets/levi (1).png";
 import {backend_url} from '../components/config'
+interface ProductType {    name: string;
+  quantity: number;
+  rate:number
+  // other properties
+}
 const GeneratePage = () => {
   const location = useLocation();
-  const products = location.state?.products || [];
+  const products = location.state?.products || [] as ProductType[];
 
   // Calculate total amount
-  const totalAmount = products.reduce(
-    (total, product) => total + product.quantity * product.rate,
-    0
+  const totalAmount : number= products.reduce(
+    (total: number, product: ProductType) => total + product.quantity * product.rate,
+  0
   );
+  
   
 
   const handleFunction = async () => {
@@ -65,29 +71,30 @@ const GeneratePage = () => {
               </tr>
             </thead>
             <tbody>
-              {products.map((product, index) => (
-                <React.Fragment key={index}>
-                  <tr className="text-center">
-                    <td className="border border-gray-100 px-4 py-4">
-                      {product.name}
-                    </td>
-                    <td className="border border-gray-100 px-4 py-4">
-                      {product.quantity}
-                    </td>
-                    <td className="border border-gray-100 px-4 py-4">
-                      {product.rate}
-                    </td>
-                    <td className="border border-gray-100 px-4 py-4">
-                      {product.quantity * product.rate}
-                    </td>
-                  </tr>
-                  {index === 0 && (
-                    <tr className="border-b border-gray-300">
-                      <td colSpan="4" className="px-4 py-2"></td>
+                {products.map((product: ProductType, index: number) => (
+                  <React.Fragment key={index}>
+                    <tr className="text-center">
+                      <td className="border border-gray-100 px-4 py-4">
+                        {product.name}
+                      </td>
+                      <td className="border border-gray-100 px-4 py-4">
+                        {product.quantity}
+                      </td>
+                      <td className="border border-gray-100 px-4 py-4">
+                        {product.rate}
+                      </td>
+                      <td className="border border-gray-100 px-4 py-4">
+                        {product.quantity * product.rate}
+                      </td>
                     </tr>
-                  )}
-                </React.Fragment>
-              ))}
+                    {index === 0 && (
+                      <tr className="border-b border-gray-300">
+                        <td colSpan={4} className="px-4 py-2"></td>
+                      </tr>
+                    )}
+                  </React.Fragment>
+                ))}
+                
             </tbody>
           </table>
           <div className="text-right m-10">

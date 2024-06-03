@@ -102,7 +102,7 @@ focus:ring-red-500 focus:border-indigo-500"
       </form>
       <div className="mt-1 mx-24">
         <h2 className="text-xl font-semibold mb-2">Total:</h2>
-        <p className="text-lg font-medium">Total Amount: INR {total.toFixed(2)}</p>   <p className="text-lg font-medium">Total gst: INR {(0.18)*total.toFixed(2)} <span className="mx-7 text-red-600">[18% on total product] </span></p> 
+        <p className="text-lg font-medium">Total Amount: INR {total}</p>   <p className="text-lg font-medium">Total gst: INR {(0.18)*total}  <span className="mx-7 text-red-600">[18% on total product] </span></p> 
       </div>
     </div>
   );
