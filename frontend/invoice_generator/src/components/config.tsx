@@ -1,1 +1,1 @@
-export const backend_url="https://invoice-generator-3.onrender.com/generate";
+export const backend_url="https://invoice-generator-3.onrender.com";
