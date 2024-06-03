@@ -2,23 +2,33 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 const AddProductPage: React.FC = () => {
   const navigate=useNavigate();
- 
+  
+  interface ProductType {    name: string;
+    quantity: number;
+    rate:number
+    // other properties
+}
+const [products, setProducts] = useState<ProductType[]>([{ name: '', quantity: 0, rate: 0 }]);
+const [total, setTotal] = useState<number>(0);
 
-  const [products, setProducts] = useState([{ name: '', quantity: 0, rate: 0 }]);
-  const [total, setTotal] = useState(0);
+const handleAddProduct = () => {
+  setProducts([...products, { name: '', quantity: 0, rate: 0 }]);
+};
 
-  const handleAddProduct = () => {
-    setProducts([...products, { name: '', quantity: 0, rate: 0 }]);
-  };
-
-  const handleProductChange = (index: number, field: string, value: string | number) => {
-    const updatedProducts = [...products];
-    updatedProducts[index][field] = value;
-    setProducts(updatedProducts);
-    calculateTotal(updatedProducts);
-  };
-
-  const calculateTotal = (products: any[]) => {
+const handleProductChange = (index: number, field: keyof ProductType, value: string | number) => {
+  const updatedProducts = products.map((product, i) => {
+    if (i === index) {
+      return {
+        ...product,
+        [field]: value
+      };
+    }
+    return product;
+  });
+  setProducts(updatedProducts);
+  calculateTotal(updatedProducts);
+};
+  const calculateTotal = (products: ProductType[]) => {
     let sum = 0;
     products.forEach((product) => {
       const productTotal = product.quantity * product.rate;
@@ -92,7 +102,7 @@ focus:ring-red-500 focus:border-indigo-500"
       </form>
       <div className="mt-1 mx-24">
         <h2 className="text-xl font-semibold mb-2">Total:</h2>
-        <p className="text-lg font-medium">Total Amount: ${total.toFixed(2)}</p>   <p className="text-lg font-medium">Total gst: ${(18/100)*total.toFixed(2)} <span className="mx-7 text-red-600">[18% on total product] </span></p> 
+        <p className="text-lg font-medium">Total Amount: INR {total.toFixed(2)}</p>   <p className="text-lg font-medium">Total gst: INR {(0.18)*total.toFixed(2)} <span className="mx-7 text-red-600">[18% on total product] </span></p> 
       </div>
     </div>
   );
