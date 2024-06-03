@@ -7,16 +7,24 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { AppDispatch } from '../redux/Store';
-
+interface p {
+ email:string,
+ name:string,
+ password:string,
+}
 const RegisterPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false); // State to manage loading indicator
 
-  const handleRegister = (email: string, password: string, name: string) => {
+  const handleRegister = (email: string, password: string, name?: string) => {
     setIsLoading(true); // Set loading state to true before dispatching action
-    
-    dispatch(register( { email, password, name }))
+    const registerData: { email: string; password: string; name?: string } = { email, password };
+  if (name) {
+    registerData.name = name; // Add name property only if it's provided
+  }
+
+  dispatch(register(registerData as p))
       .then(() => {
         toast.success('Successfully Registered!', {
           position: "top-right",
