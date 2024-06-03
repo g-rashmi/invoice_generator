@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 interface AuthFormProps {
   type: 'login' | 'register';
   onSubmit: (email: string, password: string, name?: string) => void;
+  isLoading: boolean; 
 }
 
 const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit }) => {

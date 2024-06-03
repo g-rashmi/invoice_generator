@@ -6,21 +6,17 @@ import { register } from '../redux/authSlice';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { AppDispatch } from '../redux/Store';
 
-interface RegisterPayload {
-  email: string;
-  password: string;
-  name: string;
-}
 const RegisterPage: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false); // State to manage loading indicator
 
   const handleRegister = (email: string, password: string, name: string) => {
     setIsLoading(true); // Set loading state to true before dispatching action
-    const payload :RegisterPayload= { email, password, name };
-    dispatch(register(payload))
+    
+    dispatch(register( { email, password, name }))
       .then(() => {
         toast.success('Successfully Registered!', {
           position: "top-right",
@@ -37,7 +33,7 @@ const RegisterPage: React.FC = () => {
           setIsLoading(false); // Set loading state to false after navigation
         }, 2000);
       })
-      .catch((error : any) => {
+      .catch((error : Error) => {
         toast.error('Registration failed!', {
           position: "top-right",
           autoClose: 5000,
@@ -67,7 +63,7 @@ const RegisterPage: React.FC = () => {
         pauseOnHover
         theme="dark"
       />
-      <AuthForm type="register" onSubmit={handleRegister} isLoading={isLoading}/> 
+      <AuthForm type="register"  onSubmit={handleRegister} isLoading={isLoading}/> 
     </div>
   );
 };

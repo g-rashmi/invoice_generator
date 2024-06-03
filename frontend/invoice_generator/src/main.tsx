@@ -12,7 +12,7 @@ const root = createRoot(container); // createRoot(container!) if you use TypeScr
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <App/>
     </Provider>
   </React.StrictMode>
 );

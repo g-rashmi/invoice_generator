@@ -108,7 +108,8 @@ const GeneratePage = () => {
             </div>
             <div className="flex justify-end gap-28 border-t border-gray-300 border-b border-spacing-1 py-2">
               <p>Grand Total</p>
-              <p>{0.18 * totalAmount.toFixed(2)}</p>
+              <p>{0.18 * parseFloat(totalAmount.toFixed(2))}</p>
+
             </div>
           </div>
         </div>

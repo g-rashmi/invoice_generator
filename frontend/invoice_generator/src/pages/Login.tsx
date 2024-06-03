@@ -5,9 +5,12 @@ import AuthForm from '../components/AuthForm';
 import { login } from '../redux/authSlice';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Import the CSS file
+import { AppDispatch } from '../redux/Store';
+
+
 
 const LoginPage: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false); // Add a state to handle loading state
 
@@ -30,7 +33,7 @@ const LoginPage: React.FC = () => {
           setIsLoading(false); // Set loading state to false after navigation
         }, 2000);
       })
-      .catch((error) => {
+      .catch((error:Error) => {
         toast.error('Login failed!', {
           position: "top-right",
           autoClose: 5000,
