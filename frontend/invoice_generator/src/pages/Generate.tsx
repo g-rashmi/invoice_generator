@@ -2,7 +2,8 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 
 import lvg from "./levi (1).png";
-import axios from 'axios'
+import { backend_url } from "../components/config";
+
 interface ProductType {    name: string;
   quantity: number;
   rate:number
@@ -22,7 +23,7 @@ const GeneratePage = () => {
 
   const handleFunction = async () => {
     const url = window.location.href;
-    window.location.href= `http://localhost:3000/generate?url=${url}`
+    window.location.href= `${backend_url}/generate?url=${url}`
       
   };
   
