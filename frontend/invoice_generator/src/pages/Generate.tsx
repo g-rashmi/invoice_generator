@@ -1,8 +1,8 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import axios from "axios";
+
 import lvg from "./levi (1).png";
-import {backend_url} from '../components/config'
+import axios from 'axios'
 interface ProductType {    name: string;
   quantity: number;
   rate:number
@@ -21,26 +21,11 @@ const GeneratePage = () => {
   
 
   const handleFunction = async () => {
-    try {
-      const url = window.location.href; // Current page URL
-
-      const response = await axios.get(`${backend_url}/generate`, {
-        params: { url },
-        responseType: "blob", // Important to receive the binary data
-      });
-
-      const blob = new Blob([response.data], { type: "application/pdf" });
-      const blobUrl = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = blobUrl;
-      link.download = "invoice.pdf";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch (error) {
-      console.error("Error downloading invoice:", error);
-    }
+    const url = window.location.href;
+    window.location.href= `http://localhost:3000/generate?url=${url}`
+      
   };
+  
 
   
   

@@ -13,6 +13,7 @@ app.get("/", (req, res) => {
 });
 app.use(express.json());
 app.use(cors());
+app.use("/api/auth", authRoutes);
 const PORT = process.env.PORT || 3000;
 const MONGO_URI =
   process.env.MONGO_URI || "mongodb://localhost:27017/invoice-generator";
@@ -25,7 +26,6 @@ mongoose
   .catch((err) => {
     console.error("Error connecting to MongoDB", err);
   });
-app.use("/api/auth", authRoutes);
 
 app.get("/generate", async (req, res) => {
   const { url } = req.query;
@@ -47,15 +47,16 @@ app.get("/generate", async (req, res) => {
     });
 
     // Remove the download button before generating the PDF
-    await page.evaluate(() => {
-      const downloadButton = document.querySelector("button");
-      if (downloadButton) {
-        downloadButton.style.display = "none";
-      }
-    });
+    // await page.evaluate(() => {
+    //   const downloadButton = document.querySelector('button');
+    //   if (downloadButton) {
+    //     downloadButton.style.display = "none";
+    //   }
+    // });
 
     const pdf = await page.pdf({ format: "A4", printBackground: true });
-
+    const content = await page.content();
+    console.log("Page Content:", content);
     await browser.close();
 
     res.set({

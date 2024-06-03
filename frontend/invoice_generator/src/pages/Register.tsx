@@ -5,61 +5,60 @@ import AuthForm from '../components/AuthForm';
 import { register } from '../redux/authSlice';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 import { AppDispatch } from '../redux/Store';
-interface p {
- email:string,
- name:string,
- password:string,
+
+interface RegisterData {
+  email: string;
+  name: string;
+  password: string;
 }
+
 const RegisterPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false); // State to manage loading indicator
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleRegister = (email: string, password: string, name?: string) => {
-    setIsLoading(true); // Set loading state to true before dispatching action
-    const registerData: { email: string; password: string; name?: string } = { email, password };
-  if (name) {
-    registerData.name = name; // Add name property only if it's provided
-  }
-
-  dispatch(register(registerData as p))
-      .then(() => {
+  const handleRegister = async (email: string, password: string, name: string) => {
+    setIsLoading(true);
+    try {
+      const result = await dispatch(register({ email, password, name }) as any);
+      if (result.meta.requestStatus === 'fulfilled') {
         toast.success('Successfully Registered!', {
-          position: "top-right",
+          position: 'top-right',
           autoClose: 2000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "dark",
+          theme: 'dark',
         });
-        setTimeout(() => { // Use setTimeout instead of setInterval for navigation
+        setTimeout(() => {
           navigate('/login');
-          setIsLoading(false); // Set loading state to false after navigation
+          setIsLoading(false);
         }, 2000);
-      })
-      .catch((error : Error) => {
-        toast.error('Registration failed!', {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
-        setIsLoading(false); // Set loading state to false on error
-        console.error('Registration failed:', error);
+      } else {
+        throw new Error(result.error.message);
+      }
+    } catch (error: any) {
+      toast.error('Registration failed!', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
       });
+      setIsLoading(false);
+      console.error('Registration failed:', error);
+    }
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <ToastContainer // Render ToastContainer at the top level of your component
+    <>
+      <ToastContainer
         position="top-right"
         autoClose={5000}
         hideProgressBar={false}
@@ -71,8 +70,10 @@ const RegisterPage: React.FC = () => {
         pauseOnHover
         theme="dark"
       />
-      <AuthForm type="register"  onSubmit={handleRegister} isLoading={isLoading}/> 
-    </div>
+      <div className="flex justify-center items-center h-screen">
+        <AuthForm type="register" onSubmit={handleRegister} isLoading={isLoading} />
+      </div>
+    </>
   );
 };
 

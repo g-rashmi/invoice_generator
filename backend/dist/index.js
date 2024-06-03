@@ -18,6 +18,7 @@ app.get("/", (req, res) => {
 });
 app.use(express_1.default.json());
 app.use(cors());
+app.use("/api/auth", routee_1.default);
 const PORT = process.env.PORT || 3000;
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/invoice-generator";
 mongoose_1.default
@@ -28,7 +29,6 @@ mongoose_1.default
     .catch((err) => {
     console.error("Error connecting to MongoDB", err);
 });
-app.use("/api/auth", routee_1.default);
 app.get("/generate", async (req, res) => {
     const { url } = req.query;
     if (!url) {
@@ -45,13 +45,15 @@ app.get("/generate", async (req, res) => {
             timeout: 0, // Remove the timeout limit for loading the page
         });
         // Remove the download button before generating the PDF
-        await page.evaluate(() => {
-            const downloadButton = document.querySelector("button");
-            if (downloadButton) {
-                downloadButton.style.display = "none";
-            }
-        });
+        // await page.evaluate(() => {
+        //   const downloadButton = document.querySelector('button');
+        //   if (downloadButton) {
+        //     downloadButton.style.display = "none";
+        //   }
+        // });
         const pdf = await page.pdf({ format: "A4", printBackground: true });
+        const content = await page.content();
+        console.log("Page Content:", content);
         await browser.close();
         res.set({
             "Content-Type": "application/pdf",
