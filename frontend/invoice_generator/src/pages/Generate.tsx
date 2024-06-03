@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-import lvg from "../assets/levi (1).png";
+import lvg from "./levi (1).png";
 import {backend_url} from '../components/config'
 interface ProductType {    name: string;
   quantity: number;
