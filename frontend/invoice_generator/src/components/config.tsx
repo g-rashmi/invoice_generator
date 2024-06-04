@@ -1,1 +1,1 @@
-export const backend_url="https://invoice-generator-8.onrender.com";
+export const backend_url="http://localhost:3000";
