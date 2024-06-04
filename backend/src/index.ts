@@ -46,13 +46,13 @@ app.get("/generate", async (req, res) => {
       timeout: 0, // Remove the timeout limit for loading the page
     });
 
-    // Remove the download button before generating the PDF
-    // await page.evaluate(() => {
-    //   const downloadButton = document.querySelector('button');
-    //   if (downloadButton) {
-    //     downloadButton.style.display = "none";
-    //   }
-    // });
+  
+    await page.evaluate(() => {
+      const downloadButton = document.querySelector('button');
+      if (downloadButton) {
+        downloadButton.style.display = "none";
+      }
+    });
 
     const pdf = await page.pdf({ format: "A4", printBackground: true });
     

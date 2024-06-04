@@ -4,45 +4,39 @@ import { useLocation } from "react-router-dom";
 import lvg from "./levi (1).png";
 import { backend_url } from "../components/config";
 
-interface ProductType {    name: string;
+interface ProductType {
+  name: string;
   quantity: number;
-  rate:number
-  // other properties
+  rate: number;
 }
-const GeneratePage = () => {
-  const location = useLocation();
-  const products = location.state?.products || [] as ProductType[];
 
-  // Calculate total amount
-  const totalAmount : number= products.reduce(
+const GeneratePage: React.FC = () => {
+  const location = useLocation();
+  const products = location.state?.products || ([] as ProductType[]);
+
+  const totalAmount: number = products.reduce(
     (total: number, product: ProductType) => total + product.quantity * product.rate,
-  0
+    0
   );
-  
-  
 
   const handleFunction = async () => {
     const url = window.location.href;
-    window.location.href= `${backend_url}/generate?url=${url}`
-      
+    window.location.href = `${backend_url}/generate?url=${url}`;
   };
-  
 
-  
-  
   return (
     <>
       <div className="m-2 p-1 border-indigo-500 border-x-2 border-y-2">
         <div className="container mx-auto mt-8">
-          <div className="flex justify-between mb-4">
-            <div className="w-1/2 mx-14">
+          <div className="flex justify-between flex-wrap mb-4">
+            <div className="w-full sm:w-1/2 mx-auto sm:mx-14 text-center sm:text-right mb-4 sm:mb-0">
               <h1 className="text-lg font-semibold">INVOICE GENERATOR</h1>
               <p>Sample Output Should be like this</p>
             </div>
-            <div className="w-1/2 text-right flex justify-self-end">
+            <div className="w-full sm:w-1/2 text-center">
               <img
                 src={lvg}
-                className="text-right mx-40 h-20 w-20"
+                className="h-20 w-20 mx-auto"
                 alt="Logo"
               />
             </div>
@@ -57,33 +51,32 @@ const GeneratePage = () => {
               </tr>
             </thead>
             <tbody>
-                {products.map((product: ProductType, index: number) => (
-                  <React.Fragment key={index}>
-                    <tr className="text-center">
-                      <td className="border border-gray-100 px-4 py-4">
-                        {product.name}
-                      </td>
-                      <td className="border border-gray-100 px-4 py-4">
-                        {product.quantity}
-                      </td>
-                      <td className="border border-gray-100 px-4 py-4">
-                        {product.rate}
-                      </td>
-                      <td className="border border-gray-100 px-4 py-4">
-                        {product.quantity * product.rate}
-                      </td>
+              {products.map((product: ProductType, index: number) => (
+                <React.Fragment key={index}>
+                  <tr className="text-center">
+                    <td className="border border-gray-100 px-4 py-4">
+                      {product.name}
+                    </td>
+                    <td className="border border-gray-100 px-4 py-4">
+                      {product.quantity}
+                    </td>
+                    <td className="border border-gray-100 px-4 py-4">
+                      {product.rate}
+                    </td>
+                    <td className="border border-gray-100 px-4 py-4">
+                      INR {product.quantity * product.rate}
+                    </td>
+                  </tr>
+                  {index === 0 && (
+                    <tr className="border-b border-gray-300">
+                      <td colSpan={4} className="px-4 py-2"></td>
                     </tr>
-                    {index === 0 && (
-                      <tr className="border-b border-gray-300">
-                        <td colSpan={4} className="px-4 py-2"></td>
-                      </tr>
-                    )}
-                  </React.Fragment>
-                ))}
-                
+                  )}
+                </React.Fragment>
+              ))}
             </tbody>
           </table>
-          <div className="text-right m-10">
+          <div className="text-right sm:text-center m-10">
             <div className="flex justify-end gap-10">
               <p className="text-lg font-semibold">Total Amount</p>
               <p>INR {totalAmount.toFixed(2)}</p>
@@ -94,14 +87,23 @@ const GeneratePage = () => {
             </div>
             <div className="flex justify-end gap-28 border-t border-gray-300 border-b border-spacing-1 py-2">
               <p>Grand Total</p>
-              <p>{0.18 * parseFloat(totalAmount.toFixed(2))}</p>
+              <p>{(0.18 * totalAmount).toFixed(2)}</p>
+            </div>
+            <div className="text-left my-11">
+              <p>Valid until: 12/04/23</p>
+            </div>
+            <div className="bg-black text-white w-70 text-center px-2 py-6 rounded-full mx-auto">
+              <h2 className="font-semibold">Terms and Conditions</h2>
+              <p className="text-sm mt-2">
+                We are happy to supply any further information you may need and trust that you can rely on us to fill your order which will receive our prompt and careful attention
+              </p>
             </div>
           </div>
         </div>
       </div>
       <button
         type="button"
-        className="bg-indigo-600 text-white px-4 py-2 rounded-md mr-2 m-4 hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700"
+        className="bg-indigo-600 text-white px-4 py-2 rounded-md mr-2 m-4 hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700 block mx-auto"
         onClick={handleFunction}
       >
         Download Invoice
