@@ -16,7 +16,7 @@ app.use(cors());
 app.use("/api/auth", authRoutes);
 const PORT = process.env.PORT || 3000;
 const MONGO_URI =
-  process.env.MONGO_URI || "mongodb://localhost:27017/invoice-generator";
+  process.env.MONGO_URI || "mongodb+srv://me:kW4h2qK16NOZcEyE@cluster0.jlatybj.mongodb.net/invoice_app?retryWrites=true&w=majority&appName=Cluster0";
 
 mongoose
   .connect(MONGO_URI)
@@ -67,7 +67,7 @@ app.get("/generate", async (req, res) => {
     console.log("done");
   } catch (error) {
     console.error("Error generating PDF:", error);
-    res.status(500).send("Error generating PDF");
+    res.status(500).send("Error generating PDF"+error);
   }
 });
 
