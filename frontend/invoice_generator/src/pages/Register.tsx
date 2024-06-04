@@ -7,18 +7,12 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AppDispatch } from '../redux/Store';
 
-interface RegisterData {
-  email: string;
-  name: string;
-  password: string;
-}
-
 const RegisterPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleRegister = async (email: string, password: string, name: string) => {
+  const handleRegister = async (email: string, password: string, name?: string) => {
     setIsLoading(true);
     try {
       const result = await dispatch(register({ email, password, name }) as any);
@@ -70,7 +64,7 @@ const RegisterPage: React.FC = () => {
         pauseOnHover
         theme="dark"
       />
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex justify-center items-center h-screen bg-gray-100">
         <AuthForm type="register" onSubmit={handleRegister} isLoading={isLoading} />
       </div>
     </>
