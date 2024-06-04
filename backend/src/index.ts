@@ -55,8 +55,7 @@ app.get("/generate", async (req, res) => {
     // });
 
     const pdf = await page.pdf({ format: "A4", printBackground: true });
-    const content = await page.content();
-    console.log("Page Content:", content);
+    
     await browser.close();
 
     res.set({
