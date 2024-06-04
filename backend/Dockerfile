@@ -10,6 +10,9 @@ COPY backend/package*.json ./
 # Install dependencies
 RUN npm install
 
+# Install Puppeteer browser binaries
+RUN npx puppeteer install
+
 # Copy the rest of the backend code to the working directory
 COPY backend/ ./
 
@@ -17,4 +20,4 @@ COPY backend/ ./
 EXPOSE 3000
 
 # Command to run the application
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]
