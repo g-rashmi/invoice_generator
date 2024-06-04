@@ -2,19 +2,18 @@
 FROM ghcr.io/puppeteer/puppeteer:22.10.0
 
 # Set the working directory to /app/backend
-WORKDIR /app/backend
+
 
 # Copy package.json and package-lock.json to the working directory
-COPY backend/package*.json ./
+COPY ./package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Install Puppeteer browser binaries
+# Ensure Puppeteer installs the browser binaries
 RUN npx puppeteer install
 
-# Copy the rest of the backend code to the working directory
-COPY backend/ ./
+# Copy the rest of the backend code to the working director 
 
 # Expose the port your app runs on (adjust if necessary)
 EXPOSE 3000
