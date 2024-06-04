@@ -15,7 +15,8 @@ const RegisterPage: React.FC = () => {
   const handleRegister = async (email: string, password: string, name?: string): Promise<void> => {
     setIsLoading(true);
     try {
-      const result = await dispatch(register({ email, password, name }) as any);
+      
+      const result = await dispatch(register({ email, password,  name: name || '' }) )
       if (result.meta.requestStatus === 'fulfilled') {
         toast.success('Successfully Registered!', {
           position: 'top-right',
