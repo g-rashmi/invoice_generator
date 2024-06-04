@@ -12,14 +12,14 @@ const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleRegister = async (email: string, password: string, name?: string) => {
+  const handleRegister = async (email: string, password: string, name?: string): Promise<void> => {
     setIsLoading(true);
     try {
       const result = await dispatch(register({ email, password, name }) as any);
       if (result.meta.requestStatus === 'fulfilled') {
         toast.success('Successfully Registered!', {
           position: 'top-right',
-          autoClose: 1700,
+          autoClose: 2000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -30,12 +30,23 @@ const RegisterPage: React.FC = () => {
         setTimeout(() => {
           navigate('/login');
           setIsLoading(false);
-        }, 1700);
+        }, 2000);
       } else {
-        throw new Error(result.error.message);
+        const errorMessage = result.payload?.message || 'Registration failed!';
+        toast.error(errorMessage, {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'dark',
+        });
+        setIsLoading(false);
       }
     } catch (error: any) {
-      toast.error('Registration failed!', {
+      toast.error('Registration failed! An unexpected error occurred.', {
         position: 'top-right',
         autoClose: 5000,
         hideProgressBar: false,
@@ -64,7 +75,7 @@ const RegisterPage: React.FC = () => {
         pauseOnHover
         theme="dark"
       />
-      <div className="flex justify-center items-center h-screen bg-gray-100">
+      <div className="flex justify-center items-center h-screen">
         <AuthForm type="register" onSubmit={handleRegister} isLoading={isLoading} />
       </div>
     </>
