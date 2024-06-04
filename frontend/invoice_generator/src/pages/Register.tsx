@@ -33,7 +33,7 @@ const RegisterPage: React.FC = () => {
           setIsLoading(false);
         }, 2000);
       } else {
-        const errorMessage = result.payload?.message || 'Registration failed!';
+        const errorMessage = 'Registration failed!';
         toast.error(errorMessage, {
           position: 'top-right',
           autoClose: 5000,
