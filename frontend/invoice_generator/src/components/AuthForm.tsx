@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom';
 
 interface AuthFormProps {
   type: 'login' | 'register';
-  onSubmit: (email: string, password: string, name?: string) => Promise<void>;
+  
+  onSubmit: (email: string, password: string, name?: string) => void;
   isLoading: boolean; 
 }
 
-const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, isLoading }) => {
+const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -18,18 +19,18 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, isLoading }) => {
     return emailRegex.test(email);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateEmail(email)) {
       setEmailError('Invalid email address');
       return;
     }
     setEmailError('');
-    await onSubmit(email, password, name);
+    onSubmit(email, password, name);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-md mx-auto p-4 bg-white shadow-md rounded-lg">
+    <form onSubmit={handleSubmit} className="w-full max-w-sm">
       {type === 'register' && (
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
@@ -75,27 +76,30 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, isLoading }) => {
       <div className="flex items-center justify-between">
         <button
           type="submit"
-          className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
-          disabled={isLoading}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         >
-          {isLoading ? 'Submitting...' : type === 'login' ? 'Login' : 'Register'}
+          {type === 'login' ? 'Login' : 'Register'}
         </button>
         {type === 'login' ? (
-          <Link
-            to="/"
-            className="flex justify-end items-center text-gray-800 text-sm underline"
-          >
-            New user? Register first
-          </Link>
-        ) : (
-          <Link
-            to="/login"
-            className="flex justify-end items-center text-gray-800 text-sm underline"
-          >
-            Already Registered? Login
-          </Link>
-        )}
-      </div>
+  <Link
+    to="/"
+    className="flex justify-end items-center text-gray-800 text-lg underline"
+  >
+    New user? Register first
+  </Link>
+) : (
+  <Link
+    to="/login"
+    className="flex justify-end items-center text-gray-800 text-lg underline"
+  >
+    Already Registered? Login
+  </Link>
+)}
+
+
+      </div> 
+
+
     </form>
   );
 };
