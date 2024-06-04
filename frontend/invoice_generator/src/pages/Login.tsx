@@ -2,24 +2,43 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import AuthForm from '../components/AuthForm';
-import { register } from '../redux/authSlice';
+import { login } from '../redux/authSlice';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AppDispatch } from '../redux/Store';
 
-const RegisterPage: React.FC = () => {
+const LoginPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleRegister = async (email: string, password: string, name?: string): Promise<void> => {
+  const handleLogin = (email: string, password: string) => {
     setIsLoading(true);
-    try {
-      const result = await dispatch(register({ email, password, name }) as any);
-      if (result.meta.requestStatus === 'fulfilled') {
-        toast.success('Successfully Registered!', {
+    dispatch(login({ email, password }))
+      .then((result: any) => {
+        if (result.meta.requestStatus === 'fulfilled') {
+          toast.success('Successfully logged in!', {
+            position: 'top-right',
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'dark',
+          });
+          setTimeout(() => {
+            navigate('/add-product');
+            setIsLoading(false);
+          }, 2000);
+        } else {
+          throw new Error(result.error.message);
+        }
+      })
+      .catch((error: Error) => {
+        toast.error('Login failed!', {
           position: 'top-right',
-          autoClose: 2000,
+          autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -27,27 +46,9 @@ const RegisterPage: React.FC = () => {
           progress: undefined,
           theme: 'dark',
         });
-        setTimeout(() => {
-          navigate('/login');
-          setIsLoading(false);
-        }, 2000);
-      } else {
-        throw new Error(result.error.message);
-      }
-    } catch (error: any) {
-      toast.error('Registration failed!', {
-        position: 'top-right',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'dark',
+        setIsLoading(false);
+        console.error('Login failed:', error);
       });
-      setIsLoading(false);
-      console.error('Registration failed:', error);
-    }
   };
 
   return (
@@ -64,11 +65,11 @@ const RegisterPage: React.FC = () => {
         pauseOnHover
         theme="dark"
       />
-      <div className="flex justify-center items-center h-screen bg-gray-100">
-        <AuthForm type="register" onSubmit={handleRegister} isLoading={isLoading} />
+      <div className="flex justify-center items-center h-screen">
+        <AuthForm type="login" onSubmit={handleLogin} isLoading={isLoading} />
       </div>
     </>
   );
 };
 
-export default RegisterPage;
+export default LoginPage;

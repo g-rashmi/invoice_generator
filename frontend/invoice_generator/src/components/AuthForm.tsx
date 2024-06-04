@@ -82,7 +82,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, isLoading }) => {
         </button>
         {type === 'login' ? (
           <Link
-            to="/register"
+            to="/"
             className="flex justify-end items-center text-gray-800 text-sm underline"
           >
             New user? Register first

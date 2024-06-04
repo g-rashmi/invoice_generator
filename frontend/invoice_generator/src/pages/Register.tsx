@@ -19,7 +19,7 @@ const RegisterPage: React.FC = () => {
       if (result.meta.requestStatus === 'fulfilled') {
         toast.success('Successfully Registered!', {
           position: 'top-right',
-          autoClose: 2000,
+          autoClose: 1700,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -30,7 +30,7 @@ const RegisterPage: React.FC = () => {
         setTimeout(() => {
           navigate('/login');
           setIsLoading(false);
-        }, 2000);
+        }, 1700);
       } else {
         throw new Error(result.error.message);
       }
