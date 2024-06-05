@@ -15,7 +15,8 @@ const GeneratePage: React.FC = () => {
   const products = location.state?.products || ([] as ProductType[]);
 
   const totalAmount: number = products.reduce(
-    (total: number, product: ProductType) => total + product.quantity * product.rate,
+    (total: number, product: ProductType) =>
+      total + product.quantity * product.rate,
     0
   );
 
@@ -34,11 +35,7 @@ const GeneratePage: React.FC = () => {
               <p>Sample Output Should be like this</p>
             </div>
             <div className="w-full sm:w-1/2 text-center">
-              <img
-                src={lvg}
-                className="h-20 w-20 mx-auto"
-                alt="Logo"
-              />
+              <img src={lvg} className="h-20 w-20 mx-auto" alt="Logo" />
             </div>
           </div>
           <table className="w-full border-collapse border border-gray-300">
@@ -95,7 +92,9 @@ const GeneratePage: React.FC = () => {
             <div className="bg-black text-white w-70 text-center px-2 py-6 rounded-full mx-auto">
               <h2 className="font-semibold">Terms and Conditions</h2>
               <p className="text-sm mt-2">
-                We are happy to supply any further information you may need and trust that you can rely on us to fill your order which will receive our prompt and careful attention
+                We are happy to supply any further information you may need and
+                trust that you can rely on us to fill your order which will
+                receive our prompt and careful attention
               </p>
             </div>
           </div>
