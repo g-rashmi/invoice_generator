@@ -45,25 +45,19 @@ app.get("/generate", async (req, res) => {
       waitUntil: ["networkidle0", "domcontentloaded"],
       timeout: 0, // Remove the timeout limit for loading the page
     });
-
-  
-    await page.evaluate(() => {
+  await page.evaluate(() => {
       const downloadButton = document.querySelector('button');
       if (downloadButton) {
         downloadButton.style.display = "none";
       }
     });
-
     const pdf = await page.pdf({ format: "A4", printBackground: true });
-    
-    await browser.close();
-
+    await browser.close(); 
     res.set({
       "Content-Type": "application/pdf",
       "Content-Disposition": 'attachment; filename="invoice.pdf"',
-    });
-
-    res.send(pdf);
+    }); 
+     res.send(pdf);
     console.log("done");
   } catch (error) {
     console.error("Error generating PDF:", error);

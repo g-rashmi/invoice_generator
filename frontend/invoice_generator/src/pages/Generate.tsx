@@ -27,15 +27,15 @@ const GeneratePage: React.FC = () => {
 
   return (
     <>
-      <div className="m-2 p-1 border-indigo-500 border-x-2 border-y-2">
+      <div className="m-2 p-1 border-white-500 border-x-2 border-y-2">
         <div className="container mx-auto mt-8">
           <div className="flex justify-between flex-wrap mb-4">
-            <div className="w-full sm:w-1/2 mx-auto sm:mx-14 text-center sm:text-right mb-4 sm:mb-0">
+            <div className="w-full sm:w-1/2 text-center sm:text-left mb-4 sm:mb-0">
               <h1 className="text-lg font-semibold">INVOICE GENERATOR</h1>
               <p>Sample Output Should be like this</p>
             </div>
-            <div className="w-full sm:w-1/2 text-center">
-              <img src={lvg} className="h-20 w-20 mx-auto" alt="Logo" />
+            <div className="w-full sm:w-1/2 text-center sm:text-right">
+              <img src={lvg} className="h-20 w-20 mx-auto sm:ml-auto" alt="Logo" />
             </div>
           </div>
           <table className="w-full border-collapse border border-gray-300">
